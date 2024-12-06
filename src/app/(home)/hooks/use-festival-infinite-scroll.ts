@@ -1,8 +1,8 @@
-import { IListData } from '@/types/festival/api';
+import { IFestivalListData } from '@/types/festival/api';
 import { useCallback, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-export const useFestivalInfiniteScroll = (initialData: IListData[]) => {
+export const useFestivalInfiniteScroll = (initialData: IFestivalListData[]) => {
   // 데이터 세팅
   const [data, setData] = useState(initialData);
   const [page, setPage] = useState<number>(2);

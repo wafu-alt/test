@@ -4,7 +4,7 @@ import { IFestivalListData } from '@/types/festival/api';
 import { IHomeProps } from './client-page';
 import Home from './client-page';
 
-export const fetchFestivalListData = async (): Promise<IHomeProps> => {
+const fetchFestivalListData = async (): Promise<IHomeProps> => {
   const page = 1; // 첫 페이지 설정
   const limit = 15; // 한 페이지당 데이터 양
   console.log('1 fetchFestivalListData 시작');
