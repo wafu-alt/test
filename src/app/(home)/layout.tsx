@@ -1,23 +1,12 @@
 import type { Metadata } from 'next';
-// import localFont from 'next/font/local';
 import '../../app/globals.css';
 import Link from 'next/link';
 import ScrollToTop from './components/scroll-to-top';
-
-// const geistSans = localFont({
-//   src: './fonts/GeistVF.woff',
-//   variable: '--font-geist-sans',
-//   weight: '100 900',
-// });
-// const geistMono = localFont({
-//   src: './fonts/GeistMonoVF.woff',
-//   variable: '--font-geist-mono',
-//   weight: '100 900',
-// });
+import Script from 'next/script';
 
 export const metadata: Metadata = {
-  title: 'Festibal Moa',
-  description: ' ',
+  title: 'Festival Moa',
+  description: '축제 일정 정보를 볼 수 있습니다.',
 };
 
 export default function RootLayout({
@@ -28,7 +17,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        {/* 전체 크기 조절 */}
+        <Script
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_JS_KEY}&libraries=services&autoload=false`}
+          strategy="beforeInteractive"
+        />
         <div className="relative responsive-screen mx-auto ">
           {/* 헤더 영역 */}
           <header className="p-4 max-w-screen-2xl ">

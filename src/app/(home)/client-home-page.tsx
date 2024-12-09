@@ -1,11 +1,11 @@
 'use client';
 
-import { IFestivalListData, IDataResponseStateMsg } from '@/types/festival/api';
+import { IFestivalListData, IDataResponseStateMsg } from '@/types/festival/types-api';
 import { useListErrorHandler } from './hooks/use-list-error-handler';
 import { useFestivalInfiniteScroll } from './hooks/use-festival-infinite-scroll';
 import FestivalCard from './components/festival-card';
 
-export interface IHomeProps extends IDataResponseStateMsg {
+export interface IFestivalListPageProps extends IDataResponseStateMsg {
   events: IFestivalListData[];
 }
 
@@ -14,8 +14,7 @@ export interface IHomeProps extends IDataResponseStateMsg {
  * @param events
  * @description 축제 이벤트 15개로 시작해서 무한 스크롤 추가로 불러온다
  */
-export default function Home({ success, message, events }: IHomeProps) {
-  console.log('2 Home', success, message);
+export default function HomePage({ success, message, events }: IFestivalListPageProps) {
   useListErrorHandler(success, message);
   const { data, isLoading, ref } = useFestivalInfiniteScroll(events);
 

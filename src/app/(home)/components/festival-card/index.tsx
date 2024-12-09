@@ -1,4 +1,4 @@
-import { IFestivalListData } from '@/types/festival/api';
+import { IFestivalListData } from '@/types/festival/types-api';
 import { useImageUrlValidator } from '../../hooks/use-image-url-validator';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -26,8 +26,8 @@ export default function FestivalCard({ data, index }: { data: IFestivalListData;
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               style={{ objectFit: 'contain' }}
-              loading="lazy"
-              onError={() => setImageError(true)}
+              onError={() => setImageError(true)} // 서버에서 이미지 불러오기 실패 시 이미지 에러 상태 변경
+              priority={true} // Next.js의 LCP경고 반영
             />
           ) : (
             <div className="flex items-center justify-center h-full w-1/2 bg-gray-100 text-gray-500">이미지 없음</div>

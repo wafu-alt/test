@@ -1,7 +1,13 @@
-import { IFestivalListData } from '@/types/festival/api';
+import { IFestivalListData } from '@/types/festival/types-api';
 import { useCallback, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { festivalService } from '../api/get-festival-list';
 
+/**
+ * 축제 무한 스크롤 훅
+ * @param initialData
+ * @returns data, page, isLoading, setData, setPage, setIsLoading, ref
+ */
 export const useFestivalInfiniteScroll = (initialData: IFestivalListData[]) => {
   // 데이터 세팅
   const [data, setData] = useState(initialData);
@@ -19,17 +25,17 @@ export const useFestivalInfiniteScroll = (initialData: IFestivalListData[]) => {
     const limit = 15;
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACK_HOST}${process.env.NEXT_PUBLIC_BACK_HOST_LOCATION}?page=${page}&limit=${limit}`
-      );
-      const moreData = await res.json();
+      const moreData = await festivalService.getFestivals({
+        page,
+        limit,
+      });
       // 기존 데이터 세팅 변경 moreData의 festivals만 선택해서 사용
       setData((currentData) => [...currentData, ...moreData]);
 
       // 페이지 변경
       setPage((currentPage) => currentPage + 1);
     } catch (error) {
-      console.log('error', error);
+      console.log('loadMoreData error : ', error);
     } finally {
       // 로딩 상태 변경
       setIsLoading(false);

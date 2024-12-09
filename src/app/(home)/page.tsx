@@ -1,38 +1,23 @@
 'use server';
 
-import { IFestivalListData } from '@/types/festival/api';
-import { IHomeProps } from './client-page';
-import Home from './client-page';
+import { IFestivalListData } from '@/types/festival/types-api';
+import HomePage, { IFestivalListPageProps } from './client-home-page';
+import { festivalService } from './api/get-festival-list';
 
-const fetchFestivalListData = async (): Promise<IHomeProps> => {
+/**
+ * 축제 데이터 불러오기
+ * @returns IFestivalListPageProps
+ */
+const fetchFestivalListData = async (): Promise<IFestivalListPageProps> => {
   const page = 1; // 첫 페이지 설정
   const limit = 15; // 한 페이지당 데이터 양
-  console.log('1 fetchFestivalListData 시작');
 
   try {
-    // 환경변수 체크
-    const backHost = process.env.NEXT_PUBLIC_BACK_HOST;
-    const backLocation = process.env.NEXT_PUBLIC_BACK_HOST_LOCATION;
-
-    if (!backHost || !backLocation) {
-      throw new Error('환경 변수가 설정되지 않았습니다.');
-    }
-
-    // fetch 옵션 추가
-    const res = await fetch(`${backHost}${backLocation}?page=${page}&limit=${limit}`, {
-      next: { revalidate: 0 }, // 캐시 비활성화
-    });
-
-    // 데이터 받기 실패
-    if (!res.ok) {
-      throw new Error(`전체 축제 일정을 불러올 수 없습니다 status: ${res.status}`);
-    }
-
     // 데이터 파싱
     /**
      * data =  [{}, {}, {} ...]
      */
-    const data: IFestivalListData[] = await res.json();
+    const data: IFestivalListData[] = await festivalService.getFestivals({ page, limit });
 
     return {
       success: true,
@@ -59,12 +44,15 @@ const fetchFestivalListData = async (): Promise<IHomeProps> => {
 };
 
 /**
- * 홈 페이지
- * @param events
+ * 홈 페이지 서버 컴포넌트
  * @description 축제 이벤트 15개로 시작해서 무한 스크롤 추가로 불러온다
  */
 export default async function HomeServer() {
   const initialEvents = await fetchFestivalListData();
 
-  return <Home {...initialEvents} />;
+  return (
+    <>
+      <HomePage {...initialEvents} />
+    </>
+  );
 }
