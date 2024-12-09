@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy:dev": "pm2 start ecosystem.config.js --env development",
+    "deploy": "pm2 start ecosystem.config.js --env production"
   },
   "dependencies": {
     "html-react-parser": "^5.2.0",
