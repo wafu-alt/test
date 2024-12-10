@@ -26,6 +26,7 @@ export default function FestivalDetailPage({ success, message, event }: IEventDe
   /** html이 포함한 string이 string 아닐경우 빈 string으로 return하여 에러를 예방한다 */
   const checkParseString = useCallback((content?: string) => {
     if (typeof content === 'string') {
+      console.log('checkParseString', parse(content));
       return parse(content);
     }
     return '';
@@ -108,7 +109,7 @@ export default function FestivalDetailPage({ success, message, event }: IEventDe
           {event.IntroText && (
             <section className="my-5 p-7 rounded-xl border-solid border-2">
               <h2 className="text-2xl mb-4">행사소개</h2>
-              <p className="leading-8">{checkParseString(event.IntroText)}</p>
+              <p className="leading-8 whitespace-pre-wrap break-words">{checkParseString(event.IntroText)}</p>
             </section>
           )}
 
@@ -116,7 +117,7 @@ export default function FestivalDetailPage({ success, message, event }: IEventDe
           {event.DetailText && (
             <section className="my-5 p-7 rounded-xl border-solid border-2">
               <h2 className="text-2xl mb-4">행사내용</h2>
-              <p className="leading-8">{checkParseString(event.DetailText)}</p>
+              <p className="leading-8 whitespace-pre-wrap break-words">{checkParseString(event.DetailText)}</p>
             </section>
           )}
         </article>
