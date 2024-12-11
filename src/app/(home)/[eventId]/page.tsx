@@ -1,10 +1,10 @@
 import { IDataResponseStateMsg } from '@/types/festival/types-api';
 import { IFestivalDetailData } from '@/types/festival/types-api';
-
 import { festivalDetailService } from './api/get-festival-detail';
-import FestivalDetailPage from './client-festival-detail-page';
+import FestivalInfoPage from './components/festival-info';
+import FestivalHomeButton from './components/festival-home-button';
 
-export interface IEventDetailProps extends IDataResponseStateMsg {
+export interface IFestivalInfoProps extends IDataResponseStateMsg {
   event?: IFestivalDetailData;
 }
 
@@ -13,7 +13,7 @@ export interface IEventDetailProps extends IDataResponseStateMsg {
  * @param eventId 축제 이벤트 아이디
  * @returns 축제 상세 데이터
  */
-const fetchFestivalDetailData = async (eventId: string): Promise<IEventDetailProps> => {
+const fetchFestivalDetailData = async (eventId: string): Promise<IFestivalInfoProps> => {
   try {
     // 데이터 파싱
     /**
@@ -56,7 +56,8 @@ export default async function DetailServer({ params }: { params: Promise<{ event
 
   return (
     <>
-      <FestivalDetailPage {...initialEvent} />
+      <FestivalInfoPage {...initialEvent} />
+      <FestivalHomeButton />
     </>
   );
 }

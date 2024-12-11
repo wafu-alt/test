@@ -1,36 +1,35 @@
-'use client';
-import { useRouter } from 'next/navigation';
-import { IEventDetailProps } from './page';
-import { useCallback, useEffect } from 'react';
+import { IFestivalInfoProps } from '../../page';
 import Image from 'next/image';
 import parse from 'html-react-parser';
 import Link from 'next/link';
 import LinkSVG from '@public/images/link.svg';
 import KaKaoMap from '@/components/kakao-map';
 
-export default function FestivalDetailPage({ success, message, event }: IEventDetailProps) {
-  const router = useRouter();
-
+/**
+ * 축제 상세 정보 페이지
+ * @param success 성공 여부
+ * @param message 메세지
+ * @param event 축제 상세 데이터
+ */
+export default function FestivalInfoPage({ success, message, event }: IFestivalInfoProps) {
   // SSR에서 정보를 불러오기 실패 했을때 경고문과 새로고침 실행
-  useEffect(() => {
-    if (!success) {
-      alert(`${message}에 의해 오류가 있습니다.\n잠시후 다시 접속 부탁드립니다.`);
-    }
-  }, [success, message]);
-
-  /** 목록으로 버튼 > 홈으로 이동한다 */
-  const handleScrollToTop = useCallback(() => {
-    router.push('/');
-  }, [router]);
+  if (!success) {
+    alert(`${message}에 의해 오류가 있습니다.\n잠시후 다시 접속 부탁드립니다.`);
+  }
 
   /** html이 포함한 string이 string 아닐경우 빈 string으로 return하여 에러를 예방한다 */
-  const checkParseString = useCallback((content?: string) => {
+  const checkParseString = (content?: string) => {
     if (typeof content === 'string') {
-      console.log('checkParseString', parse(content));
-      return parse(content);
+      /**
+       * HTML 특수 문자를 이스케이프 처리
+       * @description <Death>를 React가 prop으로 인식하여 생기는 에러 방지하기 위함
+       */
+      const escapedContent = content.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+      return parse(escapedContent);
     }
     return '';
-  }, []);
+  };
 
   return (
     <>
@@ -77,7 +76,12 @@ export default function FestivalDetailPage({ success, message, event }: IEventDe
                     <>
                       <dt className="font-semibold text-gray-400 whitespace-nowrap">홈페이지 :</dt>
                       <dd>
-                        <Link href={event.HomePage} className="text-blue-500 hover:text-blue-700 break-all">
+                        <Link
+                          href={event.HomePage}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500 hover:text-blue-700 break-all"
+                        >
                           <LinkSVG className="h-5 w-5 inline-block mr-1" />
                           <span className="align-middle">웹사이트</span>
                         </Link>
@@ -124,16 +128,6 @@ export default function FestivalDetailPage({ success, message, event }: IEventDe
       ) : (
         <div className="text-center text-5xl p-7 rounded-xl border-solid border-2">축제 상세 정보가 없습니다.</div>
       )}
-
-      {/* 목록으로 버튼 */}
-      <nav className="flex justify-center my-5">
-        <button
-          onClick={handleScrollToTop}
-          className="btn rounded-xl border-solid border-2 text-base bg-transparent font-normal"
-        >
-          목록으로
-        </button>
-      </nav>
     </>
   );
 }

@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from 'react';
 import { Map, MapMarker, MapTypeControl, ZoomControl } from 'react-kakao-maps-sdk';
 

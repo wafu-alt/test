@@ -1,8 +1,9 @@
 'use server';
 
 import { IFestivalListData } from '@/types/festival/types-api';
-import HomePage, { IFestivalListPageProps } from './client-home-page';
+import { IFestivalListPageProps } from './components/festival-list';
 import { festivalService } from './api/get-festival-list';
+import FestivalListPage from './components/festival-list';
 
 /**
  * 축제 데이터 불러오기
@@ -52,7 +53,7 @@ export default async function HomeServer() {
 
   return (
     <>
-      <HomePage {...initialEvents} />
+      <FestivalListPage {...initialEvents} />
     </>
   );
 }
