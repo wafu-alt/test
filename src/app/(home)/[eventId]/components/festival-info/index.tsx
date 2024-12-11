@@ -21,10 +21,15 @@ export default function FestivalInfoPage({ success, message, event }: IFestivalI
   const checkParseString = (content?: string) => {
     if (typeof content === 'string') {
       /**
-       * HTML 특수 문자를 이스케이프 처리
+       * 1. 먼저 <br> 태그를 줄바꿈으로 변환
+       * @description <br>\n 같은 문자열 처리하여 에러 방지하기 위함
+       */
+      const formattedContent = content.replace(/<br>/g, '\n');
+      /**
+       * 2. '<', '>' 특수문자를 이스케이프 처리
        * @description <Death>를 React가 prop으로 인식하여 생기는 에러 방지하기 위함
        */
-      const escapedContent = content.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const escapedContent = formattedContent.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
       return parse(escapedContent);
     }
